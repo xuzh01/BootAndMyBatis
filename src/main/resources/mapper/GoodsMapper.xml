@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.GoodsMapper">
+    <resultMap id="BaseResultMap" type="com.example.demo.entity.Goods">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="goods_name" jdbcType="VARCHAR" property="goodsName"/>
+        <result column="goods_count" jdbcType="INTEGER" property="goodsCount"/>
+        <result column="goods_cover" jdbcType="VARCHAR" property="goodsCover"/>
+        <result column="goods_price" jdbcType="REAL" property="goodsPrice"/>
+        <result column="goods_market_price" jdbcType="REAL" property="goodsMarketPrice"/>
+        <result column="goods_create_time" jdbcType="TIMESTAMP" property="goodsCreateTime"/>
+        <result column="goods_status" jdbcType="INTEGER" property="goodsStatus"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.example.demo.entity.Goods">
+        <result column="goods_desc" jdbcType="LONGVARCHAR" property="goodsDesc"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    id, goods_name, goods_count, goods_cover, goods_price, goods_market_price, goods_create_time, 
+    goods_status
+  </sql>
+    <sql id="Blob_Column_List">
+    goods_desc
+  </sql>
+    <select id="selectByExampleWithBLOBs" parameterType="com.example.demo.entity.GoodsExample"
+            resultMap="ResultMapWithBLOBs">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from goods
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByExample" parameterType="com.example.demo.entity.GoodsExample" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from goods
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from goods
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from goods
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <delete id="deleteByExample" parameterType="com.example.demo.entity.GoodsExample">
+        delete from goods
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.example.demo.entity.Goods">
+    insert into goods (id, goods_name, goods_count, 
+      goods_cover, goods_price, goods_market_price, 
+      goods_create_time, goods_status, goods_desc
+      )
+    values (#{id,jdbcType=INTEGER}, #{goodsName,jdbcType=VARCHAR}, #{goodsCount,jdbcType=INTEGER}, 
+      #{goodsCover,jdbcType=VARCHAR}, #{goodsPrice,jdbcType=REAL}, #{goodsMarketPrice,jdbcType=REAL}, 
+      #{goodsCreateTime,jdbcType=TIMESTAMP}, #{goodsStatus,jdbcType=INTEGER}, #{goodsDesc,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.example.demo.entity.Goods">
+        insert into goods
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="goodsName != null">
+                goods_name,
+            </if>
+            <if test="goodsCount != null">
+                goods_count,
+            </if>
+            <if test="goodsCover != null">
+                goods_cover,
+            </if>
+            <if test="goodsPrice != null">
+                goods_price,
+            </if>
+            <if test="goodsMarketPrice != null">
+                goods_market_price,
+            </if>
+            <if test="goodsCreateTime != null">
+                goods_create_time,
+            </if>
+            <if test="goodsStatus != null">
+                goods_status,
+            </if>
+            <if test="goodsDesc != null">
+                goods_desc,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="goodsName != null">
+                #{goodsName,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsCount != null">
+                #{goodsCount,jdbcType=INTEGER},
+            </if>
+            <if test="goodsCover != null">
+                #{goodsCover,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsPrice != null">
+                #{goodsPrice,jdbcType=REAL},
+            </if>
+            <if test="goodsMarketPrice != null">
+                #{goodsMarketPrice,jdbcType=REAL},
+            </if>
+            <if test="goodsCreateTime != null">
+                #{goodsCreateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="goodsStatus != null">
+                #{goodsStatus,jdbcType=INTEGER},
+            </if>
+            <if test="goodsDesc != null">
+                #{goodsDesc,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.example.demo.entity.GoodsExample" resultType="java.lang.Long">
+        select count(*) from goods
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update goods
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.goodsName != null">
+                goods_name = #{record.goodsName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.goodsCount != null">
+                goods_count = #{record.goodsCount,jdbcType=INTEGER},
+            </if>
+            <if test="record.goodsCover != null">
+                goods_cover = #{record.goodsCover,jdbcType=VARCHAR},
+            </if>
+            <if test="record.goodsPrice != null">
+                goods_price = #{record.goodsPrice,jdbcType=REAL},
+            </if>
+            <if test="record.goodsMarketPrice != null">
+                goods_market_price = #{record.goodsMarketPrice,jdbcType=REAL},
+            </if>
+            <if test="record.goodsCreateTime != null">
+                goods_create_time = #{record.goodsCreateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.goodsStatus != null">
+                goods_status = #{record.goodsStatus,jdbcType=INTEGER},
+            </if>
+            <if test="record.goodsDesc != null">
+                goods_desc = #{record.goodsDesc,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExampleWithBLOBs" parameterType="map">
+        update goods
+        set id = #{record.id,jdbcType=INTEGER},
+        goods_name = #{record.goodsName,jdbcType=VARCHAR},
+        goods_count = #{record.goodsCount,jdbcType=INTEGER},
+        goods_cover = #{record.goodsCover,jdbcType=VARCHAR},
+        goods_price = #{record.goodsPrice,jdbcType=REAL},
+        goods_market_price = #{record.goodsMarketPrice,jdbcType=REAL},
+        goods_create_time = #{record.goodsCreateTime,jdbcType=TIMESTAMP},
+        goods_status = #{record.goodsStatus,jdbcType=INTEGER},
+        goods_desc = #{record.goodsDesc,jdbcType=LONGVARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update goods
+        set id = #{record.id,jdbcType=INTEGER},
+        goods_name = #{record.goodsName,jdbcType=VARCHAR},
+        goods_count = #{record.goodsCount,jdbcType=INTEGER},
+        goods_cover = #{record.goodsCover,jdbcType=VARCHAR},
+        goods_price = #{record.goodsPrice,jdbcType=REAL},
+        goods_market_price = #{record.goodsMarketPrice,jdbcType=REAL},
+        goods_create_time = #{record.goodsCreateTime,jdbcType=TIMESTAMP},
+        goods_status = #{record.goodsStatus,jdbcType=INTEGER}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.example.demo.entity.Goods">
+        update goods
+        <set>
+            <if test="goodsName != null">
+                goods_name = #{goodsName,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsCount != null">
+                goods_count = #{goodsCount,jdbcType=INTEGER},
+            </if>
+            <if test="goodsCover != null">
+                goods_cover = #{goodsCover,jdbcType=VARCHAR},
+            </if>
+            <if test="goodsPrice != null">
+                goods_price = #{goodsPrice,jdbcType=REAL},
+            </if>
+            <if test="goodsMarketPrice != null">
+                goods_market_price = #{goodsMarketPrice,jdbcType=REAL},
+            </if>
+            <if test="goodsCreateTime != null">
+                goods_create_time = #{goodsCreateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="goodsStatus != null">
+                goods_status = #{goodsStatus,jdbcType=INTEGER},
+            </if>
+            <if test="goodsDesc != null">
+                goods_desc = #{goodsDesc,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.example.demo.entity.Goods">
+    update goods
+    set goods_name = #{goodsName,jdbcType=VARCHAR},
+      goods_count = #{goodsCount,jdbcType=INTEGER},
+      goods_cover = #{goodsCover,jdbcType=VARCHAR},
+      goods_price = #{goodsPrice,jdbcType=REAL},
+      goods_market_price = #{goodsMarketPrice,jdbcType=REAL},
+      goods_create_time = #{goodsCreateTime,jdbcType=TIMESTAMP},
+      goods_status = #{goodsStatus,jdbcType=INTEGER},
+      goods_desc = #{goodsDesc,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <update id="updateByPrimaryKey" parameterType="com.example.demo.entity.Goods">
+    update goods
+    set goods_name = #{goodsName,jdbcType=VARCHAR},
+      goods_count = #{goodsCount,jdbcType=INTEGER},
+      goods_cover = #{goodsCover,jdbcType=VARCHAR},
+      goods_price = #{goodsPrice,jdbcType=REAL},
+      goods_market_price = #{goodsMarketPrice,jdbcType=REAL},
+      goods_create_time = #{goodsCreateTime,jdbcType=TIMESTAMP},
+      goods_status = #{goodsStatus,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+    <select id="findGoodsByPage" parameterType="map" resultMap="BaseResultMap">
+    select * from goods limit ${(page-1)*rowcount},#{rowcount}
+  </select>
+
+    <select id="findGoodsByExample" parameterType="com.example.demo.entity.Goods" resultMap="BaseResultMap">
+        <if test="id!=0">
+            select * from goods where id=#{id}
+        </if>
+    </select>
+
+    <select id="findGoodsByPrice" parameterType="map" resultMap="BaseResultMap">
+  select * from goods where goods_price between #{minprice} and #{maxprice}
+</select>
+
+    <delete id="deleteGoodsByGids">delete from goods where id in (
+        <foreach collection="array" item="id" index="index" separator=",">#{id}</foreach>
+        )
+    </delete>
+    <insert id="saveGoodsInfo" parameterType="com.example.demo.entity.Goods">
+     insert into goods (goods_name, goods_count,
+      goods_cover, goods_price, goods_market_price,
+      goods_create_time, goods_status, goods_desc
+      )
+    values (#{goodsName,jdbcType=VARCHAR}, #{goodsCount,jdbcType=INTEGER},
+      #{goodsCover,jdbcType=VARCHAR}, #{goodsPrice,jdbcType=REAL}, #{goodsMarketPrice,jdbcType=REAL},
+      #{goodsCreateTime,jdbcType=TIMESTAMP}, #{goodsStatus,jdbcType=INTEGER}, #{goodsDesc,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+</mapper>
