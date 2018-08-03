@@ -2,6 +2,7 @@ package com.example.demo.entity;
 
 import java.util.Date;
 
+
 public class Goods {
     private Integer id;
 

@@ -17,6 +17,7 @@ import java.util.List;
  * Created by '徐真华' on 2018/7/31.
  */
 @RestController
+@RequestMapping("/test")
 public class View {
     @Autowired
     private UserMapper userMapper;
@@ -92,6 +93,15 @@ public class View {
         System.out.println("\n\n");
         int i = goodsMapper.deleteGoodsByGids(ids);
         return i;
+    }
+
+    @PostMapping("/login")
+    @ResponseBody
+    public String Login(String username,String password){
+        System.out.println(username+"\t"+password);
+        if (username.equals("13423712915")&&password.equals("123456"))
+            return "登录成功";
+        else return "登录失败";
     }
 }
 
